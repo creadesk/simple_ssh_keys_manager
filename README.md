@@ -55,6 +55,20 @@ Bestimmte Verwaltungsbefehle (`migrate`, `makemigrations`, …) starten ohne Key
 
 ## Docker
 ```bash
+sudo apt install -y docker.io
+
+sudo usermod -aG docker $USER
+sudo reboot
+
+mkdir ~/simple_ssh_keys_manager
+
+cd ~/simple_ssh_keys_manager
+
+docker pull ghcr.io/creadesk/simple_ssh_keys_manager:latest
+
+Alternativ:
+docker pull codeberg.org/creadesk/simple_ssh_keys_manager:latest
+
 mkdir -p ./zdockerdata/db
 
 docker run -d \
