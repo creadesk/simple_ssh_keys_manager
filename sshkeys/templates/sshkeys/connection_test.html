@@ -1,0 +1,27 @@
+{% extends "sshkeys/base.html" %}
+{% block title %}Verbindungstest – {{ credential.name }}{% endblock %}
+{% block content %}
+<h1>Verbindungstest: {{ credential.name }}</h1>
+<p>{{ credential.username }}@{{ credential.host }}:{{ credential.port }}</p>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Befehl ausführen</button>
+  <a href="{% url 'list' %}">Zurück</a>
+</form>
+
+{% if result %}
+  <h2>Ergebnis</h2>
+  <p>Befehl: <code>{{ result.command }}</code></p>
+  {% if result.ok %}
+    <p>Exit-Code: <strong>{{ result.code }}</strong></p>
+    <h3>stdout</h3>
+    <pre>{{ result.stdout }}</pre>
+    <h3>stderr</h3>
+    <pre>{{ result.stderr }}</pre>
+  {% else %}
+    <p class="errorlist">Fehler: {{ result.error }}</p>
+  {% endif %}
+{% endif %}
+{% endblock %}

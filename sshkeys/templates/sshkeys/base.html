@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}SSH-Keys{% endblock %}</title>
+
+  <style>
+    :root {
+      color-scheme: dark;
+
+      --bg: #171c24;
+      --surface: #222a35;
+      --surface-hover: #2b3542;
+      --border: #394554;
+
+      --text: #e2e8f0;
+      --text-muted: #9ba9b9;
+
+      --accent: #61b6c9;
+      --accent-hover: #82ccdc;
+
+      --success-bg: #203b35;
+      --success-text: #8ed8b5;
+
+      --error-bg: #442b32;
+      --error-text: #f0a0aa;
+
+      --warning-bg: #423b29;
+      --warning-text: #e7ca86;
+
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem;
+      line-height: 1.6;
+    }
+
+    /* Navigation */
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: .55rem .9rem;
+      border-radius: var(--radius);
+      transition: background .2s, color .2s;
+    }
+
+    nav a:hover {
+      background: var(--surface-hover);
+      color: var(--accent-hover);
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 1.5rem 0;
+    }
+
+    /* Headings and text */
+
+    h1, h2, h3 {
+      color: #f1f5f9;
+      line-height: 1.3;
+    }
+
+    h1 {
+      font-size: clamp(1.6rem, 4vw, 2.1rem);
+      margin-bottom: 1.5rem;
+    }
+
+    p {
+      color: var(--text-muted);
+    }
+
+    a {
+      color: var(--accent);
+    }
+
+    a:hover {
+      color: var(--accent-hover);
+    }
+
+    /* Messages */
+
+    .messages {
+      list-style: none;
+      padding: 0;
+      margin: 1rem 0;
+    }
+
+    .messages li {
+      padding: .8rem 1rem;
+      margin-bottom: .6rem;
+      border-radius: var(--radius);
+      border: 1px solid transparent;
+    }
+
+    .messages .success {
+      background: var(--success-bg);
+      color: var(--success-text);
+      border-color: #31594a;
+    }
+
+    .messages .error {
+      background: var(--error-bg);
+      color: var(--error-text);
+      border-color: #68404a;
+    }
+
+    .messages .warning {
+      background: var(--warning-bg);
+      color: var(--warning-text);
+      border-color: #655532;
+    }
+
+    /* Tables */
+
+    .table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      margin-top: 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+    }
+
+    th, td {
+      padding: .8rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      background: var(--surface);
+      color: var(--text-muted);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    tbody tr:hover {
+      background: var(--surface-hover);
+    }
+
+    /* Forms */
+
+    label {
+      display: block;
+      margin-top: 1rem;
+      margin-bottom: .35rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    input[type=text],
+    input[type=number],
+    input[type=password],
+    input[type=email],
+    textarea,
+    select {
+      width: 100%;
+      max-width: 40rem;
+      padding: .7rem .85rem;
+      background: #1b222c;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font: inherit;
+      transition: border-color .2s, box-shadow .2s;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgb(97 182 201 / 15%);
+    }
+
+    input[type=checkbox],
+    input[type=radio] {
+      accent-color: var(--accent);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    /* Buttons */
+
+    button,
+    input[type=submit],
+    .button {
+      display: inline-block;
+      padding: .65rem 1.1rem;
+      background: var(--accent);
+      color: #14232b;
+      border: 0;
+      border-radius: 6px;
+      font: inherit;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background .2s, transform .1s;
+    }
+
+    button:hover,
+    input[type=submit]:hover,
+    .button:hover {
+      background: var(--accent-hover);
+      color: #14232b;
+    }
+
+    button:active,
+    .button:active {
+      transform: translateY(1px);
+    }
+
+    /* Help and validation */
+
+    .helptext,
+    .errorlist {
+      display: block;
+      font-size: .9rem;
+      margin-top: .3rem;
+    }
+
+    .helptext {
+      color: var(--text-muted);
+    }
+
+    .errorlist {
+      color: var(--error-text);
+      padding-left: 1.2rem;
+    }
+
+    /* Actions */
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      align-items: center;
+    }
+
+    .actions form {
+      display: inline;
+    }
+
+    /* Code and preformatted text */
+
+    pre,
+    code {
+      font-family: "Cascadia Code", "Fira Code", Consolas, monospace;
+    }
+
+    pre {
+      background: #111820;
+      color: #c6d8e8;
+      padding: 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: auto;
+      max-width: 100%;
+    }
+
+    code {
+      color: #8ed8e8;
+    }
+
+    /* Status badges */
+
+    .badge {
+      display: inline-block;
+      font-size: .8rem;
+      padding: .2rem .55rem;
+      border-radius: 5px;
+      background: var(--surface-hover);
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .badge.ok {
+      background: var(--success-bg);
+      color: var(--success-text);
+    }
+
+    .badge.off {
+      background: var(--error-bg);
+      color: var(--error-text);
+    }
+
+    /* Content containers */
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Responsive */
+
+    @media (max-width: 600px) {
+      body {
+        padding: 1rem .8rem;
+      }
+
+      nav {
+        flex-direction: column;
+        gap: .25rem;
+      }
+
+      nav a {
+        padding: .7rem .8rem;
+        background: var(--surface);
+      }
+
+      th, td {
+        padding: .65rem .75rem;
+      }
+
+      .actions {
+        align-items: stretch;
+      }
+
+      .actions form,
+      .actions button,
+      .actions .button {
+        max-width: 100%;
+      }
+
+      .card {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="{% url 'list' %}">Übersicht</a>
+    <a href="{% url 'create' %}">SSH-Key hinterlegen</a>
+    <a href="{% url 'rotate' %}">Schlüsselrotation</a>
+    <a href="{% url 'admin:index' %}">Administration</a>
+    <a href="{% url 'logout' %}">Logout</a>
+  </nav>
+
+  <hr>
+
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% block content %}{% endblock %}
+
+</body>
+</html>

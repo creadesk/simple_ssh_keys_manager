@@ -1,0 +1,22 @@
+{% extends "sshkeys/base.html" %}
+{% block title %}Schlüsselrotation{% endblock %}
+{% block content %}
+<h1>Encryption-Key rotieren</h1>
+<p>
+  Alle gespeicherten SSH-Private-Keys werden mit dem neuen Key neu verschlüsselt.
+  Danach nur noch den <strong>neuen</strong> Key beim Applikationsstart verwenden.
+</p>
+<p><strong>Vorher Datenbank-Backup anlegen.</strong></p>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <p>
+    <button type="submit"
+            onclick="return confirm('Rotation jetzt durchführen?');">
+      Umschlüsselung starten
+    </button>
+    <a href="{% url 'list' %}">Abbrechen</a>
+  </p>
+</form>
+{% endblock %}
