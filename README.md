@@ -73,5 +73,5 @@ docker run -d \
   -e ALLOWED_HOSTS=127.0.0.1,localhost \
   -e DB_ENGINE=django.db.backends.sqlite3 \
   -e DB_NAME=db/db.sqlite3 \
-  simple_ssh_keys_manager:v0.0.0
+  ghcr.io/creadesk/simple_ssh_keys_manager:v0.0.0
 ```
